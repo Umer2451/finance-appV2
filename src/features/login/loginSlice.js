@@ -23,9 +23,9 @@ export const loginSlice = createSlice({
       getUserTransactions(state, action){
         state.userTransactions["Transactions"] = action.payload;
         console.log(state.userTransactions);
-      }
+      },
     },
 });
-export const { updateLoginState, addUserData, getUserTransactions} = loginSlice.actions;
+export const { updateLoginState, addUserData, getUserTransactions } = loginSlice.actions;
 
 export default loginSlice.reducer;

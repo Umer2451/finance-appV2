@@ -1,4 +1,8 @@
 /* Flex Main Container (if used elsewhere) */
+.monetary-container{
+  display: flex;
+  gap: 10px;
+}
 .main {
   display: flex;
   flex-direction: row;
@@ -55,7 +59,7 @@
   border: 1px solid #eceff2; /* Shadows/shadow-xs */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-  margin: -31px 10px 0px 277px;
+  margin: -31px 10px 0px 82%;
   width: 20%;
 }
 
