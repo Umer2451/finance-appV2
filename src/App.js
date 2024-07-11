@@ -5,7 +5,7 @@ import Login from './features/login/login';
 import { useSelector } from 'react-redux';
 function App() {
   const data = useSelector(state => state.loginData);
-  console.log(data.loginData[0], "FROM APP");
+  console.log(data.userData[0], "FROM APP");
   return (
     <div><Login/></div>
   );

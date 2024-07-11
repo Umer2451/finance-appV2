@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addUser } from './loginSlice';
+import { addUser, addUserData } from './loginSlice';
 import '../../styles/login.css';
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import firebaseApp from './firebase';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 function Login() {
   const data = useSelector(state => state.loginData);
+  const userData = useSelector(state => state.userData);
   const dispatch = useDispatch();
   const [username, setUserEmail] = useState('');
   const [password, setUserPassword] = useState('');
-
+  const [myUserData, setUserData] = useState('');
+  const auth = getAuth(firebaseApp);
   const onChangeUserEmail = (event) => {
     setUserEmail(event.target.value);
   };
@@ -20,6 +23,17 @@ function Login() {
 
   const handleLoginData = () => {
     dispatch(addUser({username: username, password: password}));
+    signInWithEmailAndPassword(auth, username, password)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        setUserData({userData: userCredential});
+        dispatch(addUserData({userData: userCredential}));
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+    });
   };
   return (
     <div>
@@ -37,7 +51,7 @@ function Login() {
           placeholder="Password"
           value={password}
         />
-        <button onClick={handleLoginData}>Add User</button>
+        <button onClick={handleLoginData}>Login</button>
       </div>
     </div>
   );
