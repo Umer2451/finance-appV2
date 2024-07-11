@@ -5,14 +5,16 @@ import firebaseApp from './firebase';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import "../../styles/login.css";  // Ensure this path is correct
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
   const data = useSelector(state => state.loginData);
   const userData = useSelector(state => state.userData);
   const navigate = useNavigate();
 
-  function navigateToHome() {
-      navigate('/home'); 
+  function navigateToHome(event) {
+    event.preventDefault(); 
+    navigate('/home'); 
   }
 
   const dispatch = useDispatch();
@@ -29,16 +31,16 @@ function Login() {
     setUserPassword(event.target.value);
   };
 
-  const handleLoginData = () => {
+  const handleLoginData = (event) => {
     dispatch(addUser({username: username, password: password}));
     signInWithEmailAndPassword(auth, username, password)
     .then((userCredential) => {
         const user = userCredential.user;
         setUserData({userData: userCredential});
-        dispatch(addUserData({userData: userCredential}));
+        dispatch(addUserData({data: userCredential}));
         const currentUser = auth.currentUser;
         if (currentUser) {
-            navigateToHome();
+            navigateToHome(event);
         }
         else{
             console.log("Invalid User");
@@ -53,23 +55,14 @@ function Login() {
 
   return (
     <div>
-      <div className="form">
-      <h1 className="heading" style={{textAlign: "center"}}> Login</h1>
-        <input
-          onChange={onChangeUserEmail}
-          type="text"
-          placeholder="Email"
-          value={username}
-        />
-        <input
-          onChange={onChangeUserPassword}
-          type="password"
-          placeholder="Password"
-          value={password}
-        />
-        <button onClick={handleLoginData}>Login</button>
-        <p>Not Registered <a href="/signup">Sign Up</a></p>
-      </div>
+      <form onSubmit={handleLoginData} className='form'>
+        <h1 className='heading'>Login</h1>
+        <input required type="text" placeholder='Enter Email' onChange={onChangeUserEmail} />
+        <input required type="password" placeholder='Enter Password' onChange={onChangeUserPassword} />
+        <button >Login</button>
+        <p>Not Registered? <a href="/">Sign Up</a></p>
+        <Toaster/>
+    </form>
     </div>
   );
 }

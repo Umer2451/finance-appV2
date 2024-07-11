@@ -9,7 +9,7 @@ export const loginSlice = createSlice({
     name: 'addUser',
     initialState,
     reducers: {
-      addUser: (state, action) => {
+      updateLoginState: (state, action) => {
         state.loginData.push({username: action.payload.username, password: action.payload.password});
         state.isLoggedIn = true;
         // console.log(state.loginData)
@@ -21,6 +21,6 @@ export const loginSlice = createSlice({
       }
     },
 });
-export const { addUser, addUserData} = loginSlice.actions;
+export const { updateLoginState, addUserData} = loginSlice.actions;
 
 export default loginSlice.reducer;
