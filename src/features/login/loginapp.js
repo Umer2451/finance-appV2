@@ -23,7 +23,6 @@ function LogintoApp() {
     try {
       await signInWithEmailAndPassword(auth, username, password);
       dispatch(updateLoginState({username: username, password: password}))
-      debugger;
       const currentUser = auth.currentUser;
       if (currentUser) {
         navigate("/home");

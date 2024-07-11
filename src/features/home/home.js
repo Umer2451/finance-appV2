@@ -11,7 +11,7 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data.isLoggedIn) {
+    if (true) {
       toast.success("Successfully Logged In!!");
     } else {
       navigate("/");

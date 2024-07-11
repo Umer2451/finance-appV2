@@ -34,10 +34,12 @@
   border-radius: 5px;
 }
 
-.center-div a:hover {
+.center-div a:hover:not(.active) {
+  background-color: #F5F8FF;
   color: blue;
 }
 .center-div a:active {
+  background-color: #F5F8FF;
   color: blue;
 }
 .material-symbols-outlined {

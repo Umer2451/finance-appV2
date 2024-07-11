@@ -9,8 +9,8 @@ function Dashboard() {
     navigate("/");
   }
   console.log(data);
-  if (data.isLoggedIn) {
-    return <h1 className="title">Hello {data.loginData[0].username}!</h1>;
+  if (true) {
+    return <div><h1 className="title">Hello Umer!</h1>;</div>
   } else {
     navigateToLogin();
   }
