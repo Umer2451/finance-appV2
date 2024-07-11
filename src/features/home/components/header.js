@@ -23,9 +23,6 @@ function Header() {
             <a href="/fakestorelogin">Wallet</a>
           </li>
           <li>
-            <a href="/fakestorelogin">Settings</a>
-          </li>
-          <li>
             <a href="/fakestorelogin">
               <span className="material-symbols-outlined">settings</span>
             </a>

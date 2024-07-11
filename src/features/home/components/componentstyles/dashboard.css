@@ -12,4 +12,6 @@
     align-self: stretch;
     flex-grow: 0;
 }
-
+.dashboard-body{
+    padding: 30px;
+}
