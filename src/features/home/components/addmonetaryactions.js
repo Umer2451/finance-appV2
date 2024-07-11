@@ -79,7 +79,7 @@ function AddmonetaryActions() {
               inputVisibility.income ? "hidden" : ""
             }`}
           >
-            <p>Add Income</p>
+            <h2 style={{display: "flex", height: "1px"}}>Add Income</h2>
             <p>Create an income manually</p>
           </div>
         </div>
@@ -112,7 +112,7 @@ function AddmonetaryActions() {
               inputVisibility.expense ? "hidden" : ""
             }`}
           >
-            <p>Add Expense</p>
+            <h2 style={{display: "flex", height: "1px"}}>Add Expense</h2>
             <p>Create an expense manually</p>
           </div>
         </div>
@@ -145,7 +145,7 @@ function AddmonetaryActions() {
               inputVisibility.balance ? "hidden" : ""
             }`}
           >
-            <p>Add Balance</p>
+            <h2 style={{display: "flex", height: "1px"}}>Add Balance</h2>
             <p>Create a balance manually</p>
           </div>
         </div>
