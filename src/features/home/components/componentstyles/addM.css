@@ -1,0 +1,75 @@
+.addmonetary-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.addmonetary-section {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as per your preference */
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%; /* Adjust width as per your layout */
+    font-family: 'Inter', sans-serif; /* Ensure Inter font is imported */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.addmonetary-section-left {
+    flex: 1; /* Takes up one-third of the section for the left content */
+    display: flex;
+}
+
+.addmonetary-section-right {
+    flex: 2; /* Takes up two-thirds of the section for the right content */
+    display: none; /* Initially hides the right content */
+    justify-content: flex-start; /* Aligns content to the start */
+    align-items: center; /* Centers items vertically */
+}
+
+.addmonetary-section.active .addmonetary-section-right {
+    display: flex; /* Shows the right content when section is active */
+}
+
+.addmonetary-section p {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.addmonetary-section input {
+    width: 70%; /* Adjust input width as per your design */
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addmonetary-section button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.addmonetary-section button:hover {
+    background-color: #0056b3;
+}
+
+.paragraphDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.paragraphDiv.hidden {
+    display: none;
+}

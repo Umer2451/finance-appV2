@@ -1,6 +1,8 @@
 import "../components/componentstyles/mstyle.css";
-
+import { useSelector } from "react-redux";
 function Monetary() {
+  debugger;
+  let stateData = useSelector((state) => state.loginData.userTransactions);
   return (
     <div className="balance-container">
       <div className="balance-text">Balance</div>
