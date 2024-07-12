@@ -8,6 +8,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Audio } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
 import { updateLoginState } from './loginSlice';
+import { fetchUserTransactions, getUserTransactions } from './loginSlice';
 function LogintoApp() {
   const isLoggedIn = useSelector(state => state.loginData);
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ function LogintoApp() {
     try {
       await signInWithEmailAndPassword(auth, username, password);
       dispatch(updateLoginState({username: username, password: password}))
+      let data = await dispatch(fetchUserTransactions())
+      dispatch(getUserTransactions({ userTransaction : data.payload }));
       const currentUser = auth.currentUser;
       if (currentUser) {
         navigate("/home");

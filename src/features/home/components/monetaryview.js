@@ -5,10 +5,9 @@ function Monetary() {
   const data = useSelector((state) => state.loginData.userTransactions?.Transactions);
 
   // Ensure data exists and has the required keys
-  const userTransaction = data?.userTransaction ?? {};
-  const userBalance = Number(userTransaction.userBalance ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  const userExpense = Number(userTransaction.userExpense ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  const userIncome = Number(userTransaction.userIncome ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const userBalance = Number(data.userBalance ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const userExpense = Number(data.userExpense ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const userIncome = Number(data.userIncome ?? 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
   return (
     <div className="monetary-container">

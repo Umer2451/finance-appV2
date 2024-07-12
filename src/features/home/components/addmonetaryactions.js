@@ -4,22 +4,21 @@ import { db } from "../../login/firebase";
 import { getAuth } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserTransactions } from "../../login/loginSlice";
+import { fetchUserTransactions } from "../../login/loginSlice";
 import firebaseApp from "../../login/firebase";
 import "../components/componentstyles/addM.css"; // Assuming your CSS file path is correct
-
+import { updateUserTransactions } from "../../login/loginSlice";
+import { getDoc, doc} from "firebase/firestore";
+import {  query, where } from "firebase/firestore";
+import toast, { Toaster } from 'react-hot-toast';
+import { Audio } from 'react-loader-spinner';
 function AddmonetaryActions() {
   const stateData = useSelector((state) => state.userTransactions);
   const dispatch = useDispatch();
   const auth = getAuth(firebaseApp);
   const currentEmail =
     auth.currentUser && auth.currentUser.email ? auth.currentUser.email : "";
-
-  const [userTransaction, setUserTransaction] = useState({
-    userBalance: "0",
-    userExpense: "0",
-    userIncome: "0",
-    currentUser: currentEmail,
-  });
+  const [userTransaction, setUserTransaction] = useState("");
 
   const [inputVisibility, setInputVisibility] = useState({
     income: false,
@@ -28,14 +27,21 @@ function AddmonetaryActions() {
   });
 
   const [val, setVal] = useState([]);
+  const [data2, getDataforTransactions] = useState("");
   const value = collection(db, "userTransactions");
-
+  const [loading, setLoading] = useState(false);  // Add loading state
   useEffect(() => {
     const getData = async () => {
       const dbVal = await getDocs(value);
       setVal(dbVal.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
+    const getDataDB = async () => {
+        let data = await dispatch(fetchUserTransactions())
+        dispatch(getUserTransactions({ userTransaction : data.payload }));
+        setUserTransaction(data.payload);
+      };
+    getDataDB();
   }, []); // Empty dependency array ensures this runs only once
 
   const toggleVisibility = (field) => {
@@ -54,13 +60,24 @@ function AddmonetaryActions() {
   };
 
   const createTransaction = async () => {
-    await addDoc(value, userTransaction);
-    setUserTransaction({
-      userBalance: "0",
-      userExpense: "0",
-      userIncome: "0",
-    });
-    dispatch(getUserTransactions({ userTransaction }));
+    setLoading(true);  // Set loading to true
+    try {
+        await addDoc(value, userTransaction);
+        setUserTransaction({
+          userBalance: userTransaction.userBalance,
+          userExpense: userTransaction.userExpense,
+          userIncome: userTransaction.userIncome,
+          currentUser: currentEmail
+        });
+        dispatch(getUserTransactions({ userTransaction }));
+        dispatch(updateUserTransactions(userTransaction));
+        toast.success("Data Updated Successfully!");
+    }
+    catch (error) {
+        toast.error(error.message);
+      } finally {
+        setLoading(false);  // Set loading to false after operation is complete
+      }
   };
 
   return (
@@ -164,6 +181,17 @@ function AddmonetaryActions() {
           </button>
         </div>
       </div>
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <Audio
+            height="80"
+            width="80"
+            radius="9"
+            color="green"
+            ariaLabel="loading"
+          />
+        </div>
+      )}
     </div>
   );
 }

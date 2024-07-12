@@ -11,16 +11,16 @@ function Header() {
             <a href="/home">Overview</a>
           </li>
           <li>
-            <a href="/fakestoreproducts">Transactions</a>
+            <a href="/transactions">Transactions</a>
           </li>
           <li>
-            <a href="/fakestorecart">Analytics</a>
+            <a href="/analytics">Analytics</a>
           </li>
           <li>
-            <a href="/aboutus">Account</a>
+            <a href="/account">Account</a>
           </li>
           <li>
-            <a href="/fakestorelogin">Wallet</a>
+            <a href="/wallet">Wallet</a>
           </li>
           <li>
             <a href="/fakestorelogin">
