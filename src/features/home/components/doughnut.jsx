@@ -9,7 +9,7 @@ function MYdounutChart(props) {
     },
     {
       label: "Transportation",
-      value: 25,
+      value: 35,
     },
     {
       label: "Credit Card",
@@ -17,7 +17,7 @@ function MYdounutChart(props) {
     },
     {
       label: "Shopping",
-      value: 25,
+      value: 85,
     },
     {
       label: "Groceries",
@@ -28,30 +28,41 @@ function MYdounutChart(props) {
     {
       label: "Home",
       icon: "home",
+      value: 25,
+      color: "#F04438"
     },
     {
       label: "Transportation",
       icon: "local_shipping",
+      value: 35,
+      color: "#36A2EB"
     },
     {
       label: "Credit Card",
       icon: "credit_card",
+      value: 25,
+      color: "#FFCE56"
     },
     {
       label: "Shopping",
       icon: "shopping_cart",
+      value: 85,
+      color: "#4BC0C0"
     },
     {
       label: "Groceries",
       icon: "shopping_basket",
+      value: 25,
+      color: "#9966FF"
     },
   ];
+  let colors= ["#F04438", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]; 
   return (
     <div className="main-doughnut-div">
-      <DonutChart selectedOffset={false} data={data} />{" "}
+      <DonutChart selectedOffset={false} colors={colors} data={data}  />{" "}
       <div className="doughnut-labels">
         {labels.map((item, index) => (
-          <DoughnutLabels key={index} icon={item.icon} title={item.label} />
+          <DoughnutLabels key={index} icon={item.icon} title={item.label} percentage = {item.value} color = {item.color} />
         ))}
       </div>
     </div>
