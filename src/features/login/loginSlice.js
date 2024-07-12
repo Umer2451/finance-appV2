@@ -14,7 +14,11 @@ const initialState = {
   isLoggedIn: false,
   userData: [],
   userTransactions: {
-    Transactions: {},
+    Transactions: {
+      userBalance: "0",
+      userIncome: "0",
+      userExpense: "0"
+    },
   },
 };
 // Asynchronous thunk action to fetch user transactions from Firestore
@@ -28,9 +32,9 @@ export const updateUserTransactions = createAsyncThunk(
         updateTransactionsDoc,
         { merge: true },
         {
-          userBalance: updateTransactionsDoc.userBalance,
-          userIncome: updateTransactionsDoc.userIncome,
-          userExpense: updateTransactionsDoc.userExpense,
+          userBalance: updateTransactionsDoc.userBalance ? updateTransactionsDoc.userBalance : "0",
+          userIncome: updateTransactionsDoc.userIncome ? updateTransactionsDoc.userIncome : "0",
+          userExpense: updateTransactionsDoc.userExpense ? updateTransactionsDoc.userExpense : "0",
         }
       );
 
@@ -79,21 +83,9 @@ export const loginSlice = createSlice({
       state.isLoggedIn = true;
     },
     getUserTransactions: (state, action) => {
-      state.userTransactions.Transactions.userBalance =
-        action.payload.userTransaction.userBalance;
-      state.userTransactions.Transactions.userIncome =
-        action.payload.userTransaction.userIncome;
-      state.userTransactions.Transactions.userExpense =
-        action.payload.userTransaction.userExpense;
-      console.log(state.userTransactions);
-    },
-    getUserTransactionsDB: (state, action) => {
-      state.userTransactions.Transactions.userBalance =
-        action.payload.userTransaction.userBalance;
-      state.userTransactions.Transactions.userIncome =
-        action.payload.userTransaction.userIncome;
-      state.userTransactions.Transactions.userExpense =
-        action.payload.userTransaction.userExpense;
+      state.userTransactions.Transactions.userBalance = action.payload.userTransaction.userBalance;
+      state.userTransactions.Transactions.userIncome = action.payload.userTransaction.userIncome;
+      state.userTransactions.Transactions.userExpense = action.payload.userTransaction.userExpense;
       console.log(state.userTransactions);
     },
   },

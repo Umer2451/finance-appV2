@@ -38,8 +38,13 @@ function AddmonetaryActions() {
     getData();
     const getDataDB = async () => {
         let data = await dispatch(fetchUserTransactions())
-        dispatch(getUserTransactions({ userTransaction : data.payload }));
-        setUserTransaction(data.payload);
+        if(data.payload){
+            dispatch(getUserTransactions({ userTransaction : data.payload }));
+            setUserTransaction(data.payload);
+        }
+        else{
+            console.log("No Data to be found");
+        }
       };
     getDataDB();
   }, []); // Empty dependency array ensures this runs only once
@@ -64,9 +69,9 @@ function AddmonetaryActions() {
     try {
         await addDoc(value, userTransaction);
         setUserTransaction({
-          userBalance: userTransaction.userBalance,
-          userExpense: userTransaction.userExpense,
-          userIncome: userTransaction.userIncome,
+          userBalance: userTransaction.userBalance ? userTransaction.userBalance : "0",
+          userExpense: userTransaction.userExpense ? userTransaction.userExpense : "0",
+          userIncome: userTransaction.userIncome ? userTransaction.userIncome : "0",
           currentUser: currentEmail
         });
         dispatch(getUserTransactions({ userTransaction }));
