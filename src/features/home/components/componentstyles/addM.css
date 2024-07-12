@@ -48,20 +48,58 @@ font-weight: 300;
     border-radius: 4px;
 }
 
-.addmonetary-section button {
+
+.add-income-button{
     padding: 10px 40px;
-    background-color: #007bff;
-    color: white;
+    background-color: #DCFAE6;
+    color: green;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-expense-button{
+    padding: 10px 40px;
+    background-color: #FEE4E2;
+    color: #D92D20;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-balance-button{
+    padding: 10px 40px;
+    background-color: #DAEBFF;
+    color: blue;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-submit-button{
+    padding: 10px 40px;
+    background-color: #DAEBFF;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-.addmonetary-section button:hover {
-    background-color: #0056b3;
+.add-submit-button:hover{
+    background-color: #5ca0ed;
 }
-
+.add-income-button:hover {
+    background-color: rgb(85, 231, 85);
+}
+.add-expense-button:hover {
+    background-color: rgb(243, 116, 116);
+}
+.add-balance-button:hover {
+    background-color: #5ca0ed;
+}
 .paragraphDiv {
     display: flex;
     flex-direction: column;

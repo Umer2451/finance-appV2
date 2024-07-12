@@ -1,0 +1,10 @@
+.segment-items{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 95%;
+    padding: 10px 20px 0px 9px;
+    color: #000000;
+    align-items: flex-start;
+}

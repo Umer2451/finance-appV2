@@ -17,7 +17,7 @@ function MYdounutChart(props) {
     },
     {
       label: "Shopping",
-      value: 85,
+      value: 5,
     },
     {
       label: "Groceries",
@@ -46,7 +46,7 @@ function MYdounutChart(props) {
     {
       label: "Shopping",
       icon: "shopping_cart",
-      value: 85,
+      value: 5,
       color: "#4BC0C0"
     },
     {

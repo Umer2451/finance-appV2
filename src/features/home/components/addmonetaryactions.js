@@ -93,7 +93,7 @@ function AddmonetaryActions() {
         }`}
       >
         <div className="addmonetary-section-left">
-          <button onClick={() => toggleVisibility("income")}>
+          <button className = "add-income-button" onClick={() => toggleVisibility("income")}>
             <span className="material-symbols-outlined">loupe</span>
           </button>
           <div
@@ -113,6 +113,7 @@ function AddmonetaryActions() {
             style={{ display: inputVisibility.income ? "block" : "none" }}
           />
           <button
+            className="add-submit-button"
             onClick={createTransaction}
             style={{ display: inputVisibility.income ? "block" : "none" }}
           >
@@ -126,7 +127,7 @@ function AddmonetaryActions() {
         }`}
       >
         <div className="addmonetary-section-left">
-          <button onClick={() => toggleVisibility("expense")}>
+          <button className = "add-expense-button" onClick={() => toggleVisibility("expense")}>
             <span className="material-symbols-outlined">currency_exchange</span>
           </button>
           <div
@@ -146,6 +147,7 @@ function AddmonetaryActions() {
             style={{ display: inputVisibility.expense ? "block" : "none" }}
           />
           <button
+          className="add-submit-button"
             onClick={createTransaction}
             style={{ display: inputVisibility.expense ? "block" : "none" }}
           >
@@ -159,7 +161,7 @@ function AddmonetaryActions() {
         }`}
       >
         <div className="addmonetary-section-left">
-          <button onClick={() => toggleVisibility("balance")}>
+          <button className = "add-balance-button" onClick={() => toggleVisibility("balance")}>
             <span className="material-symbols-outlined">account_balance</span>
           </button>
           <div
@@ -179,6 +181,7 @@ function AddmonetaryActions() {
             style={{ display: inputVisibility.balance ? "block" : "none" }}
           />
           <button
+            className="add-submit-button"
             onClick={createTransaction}
             style={{ display: inputVisibility.balance ? "block" : "none" }}
           >

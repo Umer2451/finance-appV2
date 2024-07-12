@@ -32,9 +32,9 @@ export const updateUserTransactions = createAsyncThunk(
         updateTransactionsDoc,
         { merge: true },
         {
-          userBalance: updateTransactionsDoc.userBalance ? updateTransactionsDoc.userBalance : "0",
-          userIncome: updateTransactionsDoc.userIncome ? updateTransactionsDoc.userIncome : "0",
-          userExpense: updateTransactionsDoc.userExpense ? updateTransactionsDoc.userExpense : "0",
+          userBalance: updateTransactionsDoc.userBalance,
+          userIncome: updateTransactionsDoc.userIncome,
+          userExpense: updateTransactionsDoc.userExpense,
         }
       );
 

@@ -1,0 +1,11 @@
+.section-header-row{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100;
+    padding: 10px 20px 0px 9px;
+    background-color: #ECEFF2;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    color: #516778;
+}
