@@ -94,7 +94,7 @@ function AddmonetaryActions() {
       >
         <div className="addmonetary-section-left">
           <button onClick={() => toggleVisibility("income")}>
-            <span class="material-symbols-outlined">loupe</span>
+            <span className="material-symbols-outlined">loupe</span>
           </button>
           <div
             className={`incomeDiv paragraphDiv ${
@@ -127,7 +127,7 @@ function AddmonetaryActions() {
       >
         <div className="addmonetary-section-left">
           <button onClick={() => toggleVisibility("expense")}>
-            <span class="material-symbols-outlined">currency_exchange</span>
+            <span className="material-symbols-outlined">currency_exchange</span>
           </button>
           <div
             className={`expenseDiv paragraphDiv ${
@@ -160,7 +160,7 @@ function AddmonetaryActions() {
       >
         <div className="addmonetary-section-left">
           <button onClick={() => toggleVisibility("balance")}>
-            <span class="material-symbols-outlined">account_balance</span>
+            <span className="material-symbols-outlined">account_balance</span>
           </button>
           <div
             className={`balanceDiv paragraphDiv ${
