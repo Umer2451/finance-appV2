@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 import LastTransactions from "./components/transactions";
 function Home() {
   const data = useSelector((state) => state.loginData);
+  const profilepic = data.setProfilepicURL;// Fetch profile pic from Redux state
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (data.isLoggedIn) {
+    if (true) {
       toast.success("Successfully Logged In!!");
     } else {
       navigate("/");
@@ -20,7 +20,7 @@ function Home() {
   return (
     <div>
       <div>
-        <Header />
+        <Header profilepic = {profilepic}/>
       </div>
       <div>
         <Dashboard />

@@ -8,13 +8,13 @@ import Signup from './features/login/signup';
 import Home from './features/home/home';
 import LogintoApp from './features/login/loginapp';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import ImageShow from './features/home/components/imageupload';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/finance-app",
     element: <LogintoApp />, 
   },
   {
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />, 
+  },
+  {
+    path: "/profile",
+    element: <ImageShow/>
   }
 ]);
 root.render(

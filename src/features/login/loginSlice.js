@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import firebaseApp from "./firebase";
-import { collection, query, where } from "firebase/firestore";
-import { addDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-const currentEmail =
-auth.currentUser && auth.currentUser.email ? auth.currentUser.email : "";
+
 const initialState = {
   loginData: [],
   isLoggedIn: false,
@@ -17,52 +15,71 @@ const initialState = {
     Transactions: {
       userBalance: "0",
       userIncome: "0",
-      userExpense: "0"
+      userExpense: "0",
     },
   },
+  profilepic: "",
+  setProfilepicURL: "",
 };
-// Asynchronous thunk action to fetch user transactions from Firestore
+
+// Thunk action to update user transactions in Firestore
 export const updateUserTransactions = createAsyncThunk(
   "addUser/updateUserTransactions",
   async (newData, thunkAPI) => {
-    let uid = auth.currentUser.uid;
     try {
-      let updateTransactionsDoc = doc(db, "userTransactions", uid);
-      await setDoc(
-        updateTransactionsDoc,
-        { merge: true },
-        {
-          userBalance: updateTransactionsDoc.userBalance,
-          userIncome: updateTransactionsDoc.userIncome,
-          userExpense: updateTransactionsDoc.userExpense,
-        }
-      );
-
-      // To update age and favorite color:
+      const uid = auth.currentUser.uid;
+      const updateTransactionsDoc = doc(db, "userTransactions", uid);
+      
       await updateDoc(updateTransactionsDoc, {
         userBalance: newData.userBalance,
         userIncome: newData.userIncome,
         userExpense: newData.userExpense,
       });
     } catch (error) {
-      console.error("Error updating document: ", error);
+      console.error("Error updating user transactions:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
+// Thunk action to fetch user transactions from Firestore
 export const fetchUserTransactions = createAsyncThunk(
   "addUser/fetchUserTransactions",
   async (_, thunkAPI) => {
-    let uid = auth.currentUser.uid;
-    const docRef = doc(db, "userTransactions", uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      let data = docSnap.data();
-      console.log("Document data:", docSnap.data());
-      return data;
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
+    try {
+      const uid = auth.currentUser.uid;
+      const docRef = doc(db, "userTransactions", uid);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        return data;
+      } else {
+        console.log("No such document!");
+        return {}; // Return empty object or handle absence of data
+      }
+    } catch (error) {
+      console.error("Error fetching user transactions:", error);
+      throw error;
+    }
+  }
+);
+
+// Thunk action to fetch avatar from Firebase Storage (example)
+export const fetchAvatar = createAsyncThunk(
+  "userAvatar/fetchAvatar",
+  async (_, thunkAPI) => {
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, "path/to/avatar.jpg");
+
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log("Avatar URL:", downloadURL);
+
+      return downloadURL; // Return download URL if needed
+    } catch (error) {
+      console.error("Error fetching avatar:", error);
+      throw error;
     }
   }
 );
@@ -83,10 +100,19 @@ export const loginSlice = createSlice({
       state.isLoggedIn = true;
     },
     getUserTransactions: (state, action) => {
-      state.userTransactions.Transactions.userBalance = action.payload.userTransaction.userBalance;
-      state.userTransactions.Transactions.userIncome = action.payload.userTransaction.userIncome;
-      state.userTransactions.Transactions.userExpense = action.payload.userTransaction.userExpense;
-      console.log(state.userTransactions);
+      state.userTransactions.Transactions.userBalance =
+        action.payload.userBalance || "0";
+      state.userTransactions.Transactions.userIncome =
+        action.payload.userIncome || "0";
+      state.userTransactions.Transactions.userExpense =
+        action.payload.userExpense || "0";
+    },
+    setProfilePic: (state, action) => {
+      debugger;
+      state.profilepic =  action.payload;
+    },
+    uploadProfilePicURL: (state, action) => {
+      state.setProfilepicURL = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -102,15 +128,17 @@ export const loginSlice = createSlice({
         }
       })
       .addCase(fetchUserTransactions.rejected, (state, action) => {
-        console.error(
-          "Failed to fetch user transactions:",
-          action.error.message
-        );
+        console.error("Failed to fetch user transactions:", action.error.message);
       });
   },
 });
 
-export const { updateLoginState, addUserData, getUserTransactions } =
-  loginSlice.actions;
+export const {
+  updateLoginState,
+  addUserData,
+  getUserTransactions,
+  setProfilePic,
+  uploadProfilePicURL,
+} = loginSlice.actions;
 
 export default loginSlice.reducer;

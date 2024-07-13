@@ -1,10 +1,19 @@
+import React, { useState } from 'react';
 import "../components/componentstyles/header.css";
-import Avatar from "../../../images/Avatar.png";
-import FinanApp from "../../../images/FinanApp.png";
-function Header() {
+import Avatar from "../../../images/Avatar.png"; // Import your default avatar image
+import FinanApp from "../../../images/FinanApp.png"; // Import your application logo
+import { useSelector } from 'react-redux';
+
+function Header(props) {
+  const [showMenu, setShowMenu] = useState(false);
+  let profilepic = props.profilepic || Avatar;
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <div className="flex-main">
-      <img className ="Logo" src={FinanApp} alt="logo"></img>
+      <img className="Logo" src={FinanApp} alt="logo" />
       <div className="center-div">
         <ul>
           <li>
@@ -32,10 +41,31 @@ function Header() {
               <span className="material-symbols-outlined">notifications</span>
             </a>
           </li>
-          <img className="avatar" src={Avatar} alt="avatar-image"></img>
+          <li className="avatar-container" onClick={toggleMenu}>
+            <img className="avatar" src={profilepic || Avatar} alt="avatar-image" /> {/* Display profile pic or default Avatar */}
+            {showMenu && (
+              <div className="avatar-menu">
+                <div className="menu-item">
+                  <img className="avatar" src={profilepic || Avatar} alt="avatar-image" /> {/* Display profile pic or default Avatar */}
+                </div>
+                <ul>
+                  <li>
+                    <a href="/profile">Profile</a>
+                  </li>
+                  <li>
+                    <a href="/settings">Settings</a>
+                  </li>
+                  <li>
+                    <a href="/logout">Logout</a>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </li>
         </ul>
       </div>
     </div>
   );
 }
+
 export default Header;

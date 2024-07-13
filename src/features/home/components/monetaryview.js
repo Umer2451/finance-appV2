@@ -11,14 +11,6 @@ function Monetary() {
 
   return (
     <div className="monetary-container">
-      <div className="balance-container">
-        <div className="balance-text">Balance</div>
-        <div className="balance-amount">{userBalance}</div>
-        <div className="arrow-container">
-          <span className="material-symbols-outlined">arrow_upward</span>
-          <p>12.5%</p>
-        </div>
-      </div>
 
       <div className="balance-container">
         <div className="balance-text">Income</div>
@@ -38,6 +30,16 @@ function Monetary() {
         </div>
       </div>
 
+      <div className="balance-container">
+        <div className="balance-text">Balance</div>
+        <div className="balance-amount">{userBalance}</div>
+        <div className="arrow-container">
+          <span className="material-symbols-outlined">arrow_upward</span>
+          <p>12.5%</p>
+        </div>
+      </div>
+
+      
     </div>
   );
 }
