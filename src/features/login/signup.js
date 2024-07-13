@@ -44,7 +44,7 @@ export default function Signup() {
         <input required type="text" placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)} />
         <input required type="password" placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)} />
         <button type="submit" disabled={loading}>Signup</button> {/* Disable button when loading */}
-        <p>Already Registered <a href="/">Login</a></p>
+        <p>Already Registered <a href="/finance-app">Login</a></p>
         <Toaster />
       </form>
       {loading && (

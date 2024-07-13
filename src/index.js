@@ -9,6 +9,7 @@ import Home from './features/home/home';
 import LogintoApp from './features/login/loginapp';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ImageShow from './features/home/components/imageupload';
+import Logout from './features/home/components/logout';
 const container = document.getElementById('root')
 const root = createRoot(container);
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ImageShow/>
+  },
+  {
+    path: "/logout",
+    element: <Logout/>
   }
 ]);
 root.render(
