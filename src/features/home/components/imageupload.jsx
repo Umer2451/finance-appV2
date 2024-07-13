@@ -69,14 +69,17 @@ function ImageShow() {
     }
 
     return (
-        <div className='profileDiv'>
-            <img className="avatarProfile" src={profilepicURL || Avatar} alt="avatar-image" />
-            <form className = "flexProfileDiv" onSubmit={handleSubmit}>
-                <input type="file" id="myFile" onChange={handlefileName} />
-                <input type="submit" value="Upload" />
-            </form>
-            <button onClick = {navigateToHome}>Back to home</button>
+        <div className="profile-page">
+        <div className="profile-header">
+            <img className="avatar-profile" src={profilepicURL || Avatar} alt="avatar" />
+            <h2>User Profile</h2>
         </div>
+        <form className="profile-form" onSubmit={handleSubmit}>
+            <input className="home-button" type="file" id="myFile" onChange={handlefileName} />
+            <input type="submit" value="Upload" />
+        </form>
+        <button className="home-button" onClick={navigateToHome}>Back to Home</button>
+    </div>
     );
 }
 
