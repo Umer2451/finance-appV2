@@ -124,7 +124,7 @@ function AddmonetaryActions() {
         "description": type,
         "method": "added manually",
         "date": formattedDate,
-        "amount": addedTransactionValue.toString(),
+        "amount": currentTransactionValue.toString(),
         "image": image
       }
       lastTransactions.unshift(anotherObject);
