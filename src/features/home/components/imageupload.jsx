@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { setProfilePic } from '../../login/loginSlice';
 import "../components/componentstyles/profile.css";
 import Avatar from "../../../images/Avatar.png"; // Import your default avatar image
+import { writeUserData } from '../../login/loginSlice';
 function ImageShow() {
     const storage = getStorage();
     const [profilepic, setProfilepic] = useState(""); // State to store selected file
     const [profilepicURL, setProfilepicURL] = useState("");
     // Function to handle file selection
     const navigate = useNavigate();
-
     function navigateToHome(event) {
         event.preventDefault(); 
         navigate('/home'); 
@@ -61,7 +61,7 @@ function ImageShow() {
                         console.log('File available at', downloadURL);
                         // Handle saving the download URL to your database or state
                         setProfilepicURL(downloadURL);
-                        dispatch(uploadProfilePicURL(downloadURL))
+                        dispatch(uploadProfilePicURL(downloadURL));
                     });
                 }
             );
@@ -70,7 +70,7 @@ function ImageShow() {
 
     return (
         <div className='profileDiv'>
-            <img className="avatarProfile" src={profilepic || Avatar} alt="avatar-image" />
+            <img className="avatarProfile" src={profilepicURL || Avatar} alt="avatar-image" />
             <form className = "flexProfileDiv" onSubmit={handleSubmit}>
                 <input type="file" id="myFile" onChange={handlefileName} />
                 <input type="submit" value="Upload" />

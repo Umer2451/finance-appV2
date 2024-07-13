@@ -9,7 +9,7 @@ import Home from './features/home/home';
 import LogintoApp from './features/login/loginapp';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ImageShow from './features/home/components/imageupload';
-const container = document.getElementById('root');
+const container = document.getElementById('root')
 const root = createRoot(container);
 
 const router = createBrowserRouter([

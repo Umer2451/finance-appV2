@@ -3,14 +3,18 @@ import "../components/componentstyles/header.css";
 import Avatar from "../../../images/Avatar.png"; // Import your default avatar image
 import FinanApp from "../../../images/FinanApp.png"; // Import your application logo
 import { useSelector } from 'react-redux';
-
+import { useEffect } from 'react';
 function Header(props) {
   const [showMenu, setShowMenu] = useState(false);
-  let profilepic = props.profilepic || Avatar;
+  let [profilepic, setProfilepicUrl] = useState("")
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
-
+  const data = useSelector((state) => state.loginData);
+  useEffect(() => {
+    let profilepicData = data.setProfilepicURL || Avatar;
+    setProfilepicUrl(profilepicData);
+  }, []);
   return (
     <div className="flex-main">
       <img className="Logo" src={FinanApp} alt="logo" />

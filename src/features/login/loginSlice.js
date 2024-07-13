@@ -3,8 +3,8 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import firebaseApp from "./firebase";
 import { setDoc, updateDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
-
+import { getStorage, ref, uploadBytes} from "firebase/storage";
+import { set } from "firebase/database";
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const currentEmail =
@@ -108,7 +108,6 @@ export const loginSlice = createSlice({
       state.profilepic = action.payload;
     },
     uploadProfilePicURL(state, action) {
-      debugger;
       state.setProfilepicURL = action.payload;
     },
   },
@@ -133,7 +132,7 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL} =
+export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL, writeUserData} =
   loginSlice.actions;
 
 export default loginSlice.reducer;
