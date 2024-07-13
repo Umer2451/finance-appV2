@@ -27,6 +27,7 @@ const initialState = {
 export const updateUserTransactions = createAsyncThunk(
   "addUser/updateUserTransactions",
   async (newData, thunkAPI) => {
+    debugger
     let uid = auth.currentUser.uid;
     try {
       let updateTransactionsDoc = doc(db, "userTransactions", uid);
@@ -104,6 +105,15 @@ export const loginSlice = createSlice({
         action.payload.userTransaction.userExpense;
       console.log(state.userTransactions);
     },
+    getUserTransactionsLocal: (state, action) => {
+      state.userTransactions.Transactions.userBalance =
+        action.payload.newObject.userBalance;
+      state.userTransactions.Transactions.userIncome =
+        action.payload.newObject.userIncome;
+      state.userTransactions.Transactions.userExpense =
+        action.payload.newObject.userExpense;
+      console.log(state.userTransactions);
+    },
     setProfilePic(state, action) {
       state.profilepic = action.payload;
     },
@@ -132,7 +142,7 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL, writeUserData} =
+export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL, writeUserData, getUserTransactionsLocal} =
   loginSlice.actions;
 
 export default loginSlice.reducer;

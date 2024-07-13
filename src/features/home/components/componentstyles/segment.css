@@ -1,10 +1,22 @@
-.segment-items{
+.segment-items {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    gap: 10px;
+    align-items: center; /* Align all items in the center vertically */
+    gap: 20px; /* Consistent gap between all items */
     width: 95%;
     padding: 10px 20px 0px 9px;
     color: #000000;
-    align-items: flex-start;
+}
+
+.segment-content {
+    display: flex;
+    align-items: center; /* Align image and description vertically centered */
+    gap: 10px; /* Gap between the image and description */
+}
+
+.segment-items p {
+    margin: 0; /* Remove default margin from paragraph */
+}
+
+.method, .date, .amount {
+    padding: 5px 0; /* Add consistent padding around each paragraph */
 }

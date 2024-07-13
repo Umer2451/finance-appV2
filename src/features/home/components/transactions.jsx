@@ -1,6 +1,7 @@
 import "../components/componentstyles/lasttransactions.css";
 import Segment from "./segment";
 import Segmentheader from "./segmentsectionheader";
+import lastTransactions from "../../mockAPI/lastTransactions";
 function LastTransactions() {
   let sectionheaderData = [{
     label : "Description",
@@ -19,7 +20,9 @@ function LastTransactions() {
         <Segmentheader key = {index} title = {item.label} sTitle = {item.label2} tTitle = {item.label3} fTitle = {item.label4}/>
       ))}
           <>
-      <Segment />
+          {lastTransactions.map((item, index) => (
+            <Segment key = {index} image = {item.image} description = {item.description} amount = {item.amount} date = {item.date} method = {item.method}/>
+          ))}
       </>
     </div>
     </div>

@@ -3,22 +3,28 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../login/firebase";
 import { getAuth } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserTransactions } from "../../login/loginSlice";
-import { fetchUserTransactions } from "../../login/loginSlice";
+import { getUserTransactions, fetchUserTransactions, updateUserTransactions, getUserTransactionsLocal } from "../../login/loginSlice";
 import firebaseApp from "../../login/firebase";
-import "../components/componentstyles/addM.css"; // Assuming your CSS file path is correct
-import { updateUserTransactions } from "../../login/loginSlice";
-import { getDoc, doc} from "firebase/firestore";
-import {  query, where } from "firebase/firestore";
-import toast, { Toaster } from 'react-hot-toast';
 import { Audio } from 'react-loader-spinner';
+import toast from 'react-hot-toast';
+import "../components/componentstyles/addM.css"; // Assuming your CSS file path is correct
+import lastTransactions from "../../mockAPI/lastTransactions";
+import expense from "../../../images/expense.png"; // Import your default avatar image
+import income from "../../../images/income.png"; // Import your default avatar image
+import balance from "../../../images/balance.png"; // Import your default avatar image
+
 function AddmonetaryActions() {
-  const stateData = useSelector((state) => state.userTransactions);
+  const stateData = useSelector((state) => state.loginData);
   const dispatch = useDispatch();
   const auth = getAuth(firebaseApp);
-  const currentEmail =
-    auth.currentUser && auth.currentUser.email ? auth.currentUser.email : "";
-  const [userTransaction, setUserTransaction] = useState("");
+  const currentEmail = auth.currentUser && auth.currentUser.email ? auth.currentUser.email : "";
+
+  // Initialize userTransaction state with default values
+  const [userTransaction, setUserTransaction] = useState({
+    userIncome: "",
+    userExpense: "",
+    userBalance: "",
+  });
 
   const [inputVisibility, setInputVisibility] = useState({
     income: false,
@@ -26,26 +32,30 @@ function AddmonetaryActions() {
     balance: false,
   });
 
-  const [val, setVal] = useState([]);
-  const [data2, getDataforTransactions] = useState("");
   const value = collection(db, "userTransactions");
   const [loading, setLoading] = useState(false);  // Add loading state
+
   useEffect(() => {
     const getData = async () => {
       const dbVal = await getDocs(value);
-      setVal(dbVal.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      // Assuming setVal is used somewhere else
+      // setVal(dbVal.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
+
     const getDataDB = async () => {
-        let data = await dispatch(fetchUserTransactions())
-        if(data.payload){
-            dispatch(getUserTransactions({ userTransaction : data.payload }));
-            setUserTransaction(data.payload);
+      try {
+        let data = await dispatch(fetchUserTransactions());
+        if (data.payload) {
+          dispatch(getUserTransactions({ userTransaction: data.payload }));
+          setUserTransaction(data.payload);
+        } else {
+          console.log("No Data to be found");
         }
-        else{
-            console.log("No Data to be found");
-        }
-      };
+      } catch (error) {
+        console.error("Error fetching user transactions:", error);
+      }
+    };
     getDataDB();
   }, []); // Empty dependency array ensures this runs only once
 
@@ -64,44 +74,76 @@ function AddmonetaryActions() {
     }));
   };
 
-  const createTransaction = async () => {
+  const createTransaction = async (transactionType) => {
     setLoading(true);  // Set loading to true
     try {
-        await addDoc(value, userTransaction);
-        setUserTransaction({
-          userBalance: userTransaction.userBalance ? userTransaction.userBalance : "0",
-          userExpense: userTransaction.userExpense ? userTransaction.userExpense : "0",
-          userIncome: userTransaction.userIncome ? userTransaction.userIncome : "0",
-          currentUser: currentEmail
-        });
-        dispatch(getUserTransactions({ userTransaction }));
-        dispatch(updateUserTransactions(userTransaction));
-        toast.success("Data Updated Successfully!");
-    }
-    catch (error) {
-        toast.error(error.message);
-      } finally {
-        setLoading(false);  // Set loading to false after operation is complete
+      debugger;
+      await addDoc(value, userTransaction);
+
+      let currentTransactionValue = parseInt(userTransaction[transactionType], 10) || 0;
+
+      let addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
+
+      let newTransaction = {
+        ...stateData.userTransactions.Transactions,
+        [transactionType]: addedTransactionValue.toString(),
+      };
+
+      // Update userTransaction state correctly
+      setUserTransaction(prevState => ({
+        ...prevState,
+        [transactionType]: addedTransactionValue.toString(),
+        currentUser: currentEmail
+      }));
+
+      dispatch(getUserTransactionsLocal({ newObject: newTransaction }));
+      dispatch(updateUserTransactions(newTransaction));
+      toast.success(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} Updated Successfully!`);
+      const d = new Date();
+
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-indexed
+      const year = d.getFullYear();
+
+      const formattedDate = `${day}/${month}/${year}`;
+      let type = "";
+      let image = null;
+      if(transactionType == "userIncome"){
+        type = "Income";
+        image = income;
       }
+      else if(transactionType == "userExpense"){
+        type = "Expense";
+        image = expense;
+      }
+      else{
+        type = "Balance";
+        image = balance;
+      }
+      let anotherObject = {
+        "description": type,
+        "method": "added manually",
+        "date": formattedDate,
+        "amount": addedTransactionValue.toString(),
+        "image": image
+      }
+      lastTransactions.unshift(anotherObject);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="addmonetary-container">
-      <div
-        className={`addmonetary-section ${
-          inputVisibility.income ? "active" : ""
-        }`}
-      >
+      <div className={`addmonetary-section ${inputVisibility.income ? "active" : ""}`}>
         <div className="addmonetary-section-left">
-          <button className = "add-income-button" onClick={() => toggleVisibility("income")}>
+          <button className="add-income-button" onClick={() => toggleVisibility("income")}>
             <span className="material-symbols-outlined">loupe</span>
           </button>
-          <div
-            className={`incomeDiv paragraphDiv ${
-              inputVisibility.income ? "hidden" : ""
-            }`}
-          >
-            <h2 style={{display: "flex", height: "1px"}}>Add Income</h2>
+          <div className={`incomeDiv paragraphDiv ${inputVisibility.income ? "hidden" : ""}`}>
+            <h2 style={{ display: "flex", height: "1px" }}>Add Income</h2>
             <p>Create an income manually</p>
           </div>
         </div>
@@ -114,28 +156,20 @@ function AddmonetaryActions() {
           />
           <button
             className="add-submit-button"
-            onClick={createTransaction}
+            onClick={() => createTransaction("userIncome")}
             style={{ display: inputVisibility.income ? "block" : "none" }}
           >
             Submit Income
           </button>
         </div>
       </div>
-      <div
-        className={`addmonetary-section ${
-          inputVisibility.expense ? "active" : ""
-        }`}
-      >
+      <div className={`addmonetary-section ${inputVisibility.expense ? "active" : ""}`}>
         <div className="addmonetary-section-left">
-          <button className = "add-expense-button" onClick={() => toggleVisibility("expense")}>
+          <button className="add-expense-button" onClick={() => toggleVisibility("expense")}>
             <span className="material-symbols-outlined">currency_exchange</span>
           </button>
-          <div
-            className={`expenseDiv paragraphDiv ${
-              inputVisibility.expense ? "hidden" : ""
-            }`}
-          >
-            <h2 style={{display: "flex", height: "1px"}}>Add Expense</h2>
+          <div className={`expenseDiv paragraphDiv ${inputVisibility.expense ? "hidden" : ""}`}>
+            <h2 style={{ display: "flex", height: "1px" }}>Add Expense</h2>
             <p>Create an expense manually</p>
           </div>
         </div>
@@ -147,29 +181,21 @@ function AddmonetaryActions() {
             style={{ display: inputVisibility.expense ? "block" : "none" }}
           />
           <button
-          className="add-submit-button"
-            onClick={createTransaction}
+            className="add-submit-button"
+            onClick={() => createTransaction("userExpense")}
             style={{ display: inputVisibility.expense ? "block" : "none" }}
           >
             Submit Expense
           </button>
         </div>
       </div>
-      <div
-        className={`addmonetary-section ${
-          inputVisibility.balance ? "active" : ""
-        }`}
-      >
+      <div className={`addmonetary-section ${inputVisibility.balance ? "active" : ""}`}>
         <div className="addmonetary-section-left">
-          <button className = "add-balance-button" onClick={() => toggleVisibility("balance")}>
+          <button className="add-balance-button" onClick={() => toggleVisibility("balance")}>
             <span className="material-symbols-outlined">account_balance</span>
           </button>
-          <div
-            className={`balanceDiv paragraphDiv ${
-              inputVisibility.balance ? "hidden" : ""
-            }`}
-          >
-            <h2 style={{display: "flex", height: "1px"}}>Add Balance</h2>
+          <div className={`balanceDiv paragraphDiv ${inputVisibility.balance ? "hidden" : ""}`}>
+            <h2 style={{ display: "flex", height: "1px" }}>Add Balance</h2>
             <p>Create a balance manually</p>
           </div>
         </div>
@@ -182,7 +208,7 @@ function AddmonetaryActions() {
           />
           <button
             className="add-submit-button"
-            onClick={createTransaction}
+            onClick={() => createTransaction("userBalance")}
             style={{ display: inputVisibility.balance ? "block" : "none" }}
           >
             Submit Balance
