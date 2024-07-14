@@ -3,7 +3,6 @@ import "../components/componentstyles/doughnut.css";
 import DoughnutLabels from "./doughnutlabels";
 import { useSelector } from "react-redux";
 function MYdounutChart(props) {
-  debugger;
   const loginData = useSelector(state => state.loginData);
   let userTransactions = loginData.userTransactions.Transactions;
   let data = [

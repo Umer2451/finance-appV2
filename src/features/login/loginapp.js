@@ -23,7 +23,8 @@ function LogintoApp() {
     setLoading(true);  // Set loading to true
     try {
       await signInWithEmailAndPassword(auth, username, password);
-      dispatch(updateLoginState({username: username, password: password}))
+      const currentUser = auth.currentUser;
+      dispatch(updateLoginState({username: username, password: password, currentUID: currentUser.uid}))
       let data = await dispatch(fetchUserTransactions())
       if(data.payload){
         dispatch(getUserTransactions({ userTransaction : data.payload }));
@@ -31,7 +32,6 @@ function LogintoApp() {
       else{
         toast.success("Welcome to the app");
       }
-      const currentUser = auth.currentUser;
       if (currentUser) {
         navigate("/home");
       } else {

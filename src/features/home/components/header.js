@@ -4,6 +4,7 @@ import Avatar from "../../../images/Avatar.png"; // Import your default avatar i
 import FinanApp from "../../../images/FinanApp.png"; // Import your application logo
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 function Header(props) {
   const [showMenu, setShowMenu] = useState(false);
   let [profilepic, setProfilepicUrl] = useState("")
@@ -21,10 +22,10 @@ function Header(props) {
       <div className="center-div">
         <ul>
           <li>
-            <a href="/home">Overview</a>
+          <Link to="/home">Overview</Link>
           </li>
           <li>
-            <a href="/transactions">Transactions</a>
+          <Link to="/transactions">Transactions</Link>
           </li>
           <li>
             <a href="/analytics">Analytics</a>
