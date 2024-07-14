@@ -1,16 +1,30 @@
 import Segmentheader from "./segmentsectionheader";
 import Segment from "./segment";
 import Header from "./header";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateLastTransactionState, fetchUserLastTransactions} from "../../login/loginSlice";
+import { useEffect } from "react";
 function TransactionPage(){
     const data = useSelector(state => state.loginData);
     let lastTransactions = data.lastTransactions;
+    let dispatch = useDispatch();
     let sectionheaderData = [{
         label : "Description",
         label2 : "Method",
         label3 : "Date",
         label4 : "Amount"
       }]
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            let lastData = await dispatch(fetchUserLastTransactions());
+            dispatch(updateLastTransactionState(lastData.payload.lastTransactions));
+          } catch (error) {
+            console.error("Error fetching user last transactions:", error);
+          }
+        };
+        fetchData();
+      }, [dispatch]);
     return(<div>
         <div>
         <Header></Header>
