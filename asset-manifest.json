@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/finance-app/static/css/main.85d775dd.css",
-    "main.js": "/finance-app/static/js/main.e2d16f18.js",
+    "main.css": "/finance-app/static/css/main.c57f65ac.css",
+    "main.js": "/finance-app/static/js/main.ec86531f.js",
     "static/js/453.ed3810f9.chunk.js": "/finance-app/static/js/453.ed3810f9.chunk.js",
     "static/media/Avatar.png": "/finance-app/static/media/Avatar.6641bf7efc0194d2f3b9.png",
     "static/media/balance.png": "/finance-app/static/media/balance.d2f3cc3a6391ad4511e5.png",
@@ -9,12 +9,12 @@
     "static/media/income.png": "/finance-app/static/media/income.130cf0bd12c291081726.png",
     "static/media/FinanApp.png": "/finance-app/static/media/FinanApp.030a816e621476aec89d.png",
     "index.html": "/finance-app/index.html",
-    "main.85d775dd.css.map": "/finance-app/static/css/main.85d775dd.css.map",
-    "main.e2d16f18.js.map": "/finance-app/static/js/main.e2d16f18.js.map",
+    "main.c57f65ac.css.map": "/finance-app/static/css/main.c57f65ac.css.map",
+    "main.ec86531f.js.map": "/finance-app/static/js/main.ec86531f.js.map",
     "453.ed3810f9.chunk.js.map": "/finance-app/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.85d775dd.css",
-    "static/js/main.e2d16f18.js"
+    "static/css/main.c57f65ac.css",
+    "static/js/main.ec86531f.js"
   ]
 }
