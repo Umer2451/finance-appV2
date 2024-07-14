@@ -140,11 +140,17 @@ function AddmonetaryActions() {
         type = "Balance";
         image = balance;
       }
+      const formattedValue = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(Number(currentTransactionValue.toString()));
       let anotherObject = {
         "description": type,
         "method": "added manually",
         "date": formattedDate,
-        "amount": currentTransactionValue.toString(),
+        "amount": formattedValue,
         "image": image
       }
       lastTransactions.unshift(anotherObject);

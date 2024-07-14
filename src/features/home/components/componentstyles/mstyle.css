@@ -49,14 +49,17 @@ font-weight: 300;
 .balance-amount {
   font-size: 2rem;
   color: blue;
+  font-weight: 500;
 }
 .income-amount {
   font-size: 2rem;
   color: #62ff00;
+  font-weight: 500;
 }
 .expenses-amount {
   font-size: 2rem;
   color: red;
+  font-weight: 500;
 }
 
 /* Arrow Container */
