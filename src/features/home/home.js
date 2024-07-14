@@ -7,11 +7,11 @@ import { useSelector } from "react-redux";
 import LastTransactions from "./components/transactions";
 function Home() {
   const data = useSelector((state) => state.loginData);
-  const profilepic = data.setProfilepicURL;// Fetch profile pic from Redux state
+  const profilepic = data.loginData.setProfilepicURL;// Fetch profile pic from Redux state
   const navigate = useNavigate();
   useEffect(() => {
     if (true) {
-      toast.success("Successfully Logged In!!");
+      console.log("user has logged in.")
     } else {
       navigate("/");
     }

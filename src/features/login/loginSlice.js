@@ -5,6 +5,8 @@ import firebaseApp from "./firebase";
 import { setDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes} from "firebase/storage";
 import { set } from "firebase/database";
+import { act } from "react";
+import { arrayUnion, arrayRemove, addDoc, collection } from "firebase/firestore";
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const currentEmail =
@@ -20,6 +22,7 @@ const initialState = {
       userExpense: "0",
     },
   },
+  lastTransactions: [],
   profilepic: "",
   setProfilepicURL: ""
 };
@@ -49,6 +52,76 @@ export const updateUserTransactions = createAsyncThunk(
       });
     } catch (error) {
       console.error("Error updating document: ", error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+// Initialize lastTransactions document if it doesn't exist
+export const initializeLastTransactions = createAsyncThunk(
+  "addUser/updateUserTransactions",
+  async (_, thunkAPI) => {
+  let uid = auth.currentUser.uid;
+  await setDoc(doc(db, "lastTransactions", uid), {
+    lastTransactions: []
+  });  
+});
+
+// Update lastTransactions in Firestore
+export const updateLastTransactions = createAsyncThunk(
+  "addUser/updateLastTransactions",
+  async (newData, thunkAPI) => {
+    try {
+      const uid = auth.currentUser.uid;
+      const updateLastTransactionsDoc = doc(db, "lastTransactions", uid);
+
+      // Attempt to update the document with arrayUnion
+      const docSnap = await updateDoc(updateLastTransactionsDoc, {
+        lastTransactions: arrayUnion({
+          description: newData.description,
+          method: "added manually",
+          date: newData.date,
+          amount: newData.amount,
+          image: newData.image
+        })
+      });
+
+      if (docSnap) {
+        console.log("Document updated successfully:", docSnap);
+        return newData; // Return the updated data if needed
+      } else {
+        console.log("No such document!");
+        return thunkAPI.rejectWithValue("No such document!");
+      }
+    } catch (error) {
+      console.error("Error updating document:", error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchUserLastTransactions = createAsyncThunk(
+  "addUser/fetchUserLastTransactions",
+  async (_, thunkAPI) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      const uid = user.uid;
+      const docRef = doc(db, "lastTransactions", uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        let data = docSnap.data();
+        console.log("Document data:", data);
+        return data;
+      } else {
+        console.log("No such document!");
+        return {};
+      }
+    } catch (error) {
+      console.error("Error fetching last transactions:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -120,6 +193,12 @@ export const loginSlice = createSlice({
     uploadProfilePicURL(state, action) {
       state.setProfilepicURL = action.payload;
     },
+    updateLastTransactionState(state, action){
+      state.lastTransactions = action.payload
+    },
+    pushManuallyaddedTransaction(state, action){
+      state.lastTransactions.push(action.payload)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -142,7 +221,6 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL, writeUserData, getUserTransactionsLocal} =
+export const { updateLoginState, addUserData, getUserTransactions, setProfilePic, uploadProfilePicURL, writeUserData, getUserTransactionsLocal, updateLastTransactionState, pushManuallyaddedTransaction} =
   loginSlice.actions;
-
 export default loginSlice.reducer;

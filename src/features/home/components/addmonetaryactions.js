@@ -3,23 +3,27 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../login/firebase";
 import { getAuth } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserTransactions, fetchUserTransactions, updateUserTransactions, getUserTransactionsLocal } from "../../login/loginSlice";
+import {
+  getUserTransactions,
+  fetchUserTransactions,
+  updateUserTransactions,
+  getUserTransactionsLocal,
+  fetchUserLastTransactions,
+  updateLastTransactions,
+} from "../../login/loginSlice";
 import firebaseApp from "../../login/firebase";
-import { Audio } from 'react-loader-spinner';
-import toast from 'react-hot-toast';
-import "../components/componentstyles/addM.css"; // Assuming your CSS file path is correct
-import lastTransactions from "../../mockAPI/lastTransactions";
-import expense from "../../../images/expense.png"; // Import your default avatar image
-import income from "../../../images/income.png"; // Import your default avatar image
-import balance from "../../../images/balance.png"; // Import your default avatar image
-
+import { Audio } from "react-loader-spinner";
+import toast from "react-hot-toast";
+import "../components/componentstyles/addM.css";
+import expense from "../../../images/expense.png";
+import income from "../../../images/income.png";
+import balance from "../../../images/balance.png";
+import { pushManuallyaddedTransaction } from "../../login/loginSlice";
 function AddmonetaryActions() {
   const stateData = useSelector((state) => state.loginData);
   const dispatch = useDispatch();
   const auth = getAuth(firebaseApp);
   const currentEmail = auth.currentUser && auth.currentUser.email ? auth.currentUser.email : "";
-
-  // Initialize userTransaction state with default values
   const [userTransaction, setUserTransaction] = useState({
     userIncome: "",
     userExpense: "",
@@ -33,13 +37,11 @@ function AddmonetaryActions() {
   });
 
   const value = collection(db, "userTransactions");
-  const [loading, setLoading] = useState(false);  // Add loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       const dbVal = await getDocs(value);
-      // Assuming setVal is used somewhere else
-      // setVal(dbVal.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
 
@@ -57,7 +59,7 @@ function AddmonetaryActions() {
       }
     };
     getDataDB();
-  }, []); // Empty dependency array ensures this runs only once
+  }, [dispatch]);
 
   const toggleVisibility = (field) => {
     setInputVisibility((prevState) => ({
@@ -75,33 +77,31 @@ function AddmonetaryActions() {
   };
 
   const createTransaction = async (transactionType) => {
-    setLoading(true);  // Set loading to true
+    setLoading(true);
     try {
-      debugger;
       await addDoc(value, userTransaction);
 
       let currentTransactionValue = parseInt(userTransaction[transactionType], 10) || 0;
       let addedTransactionValue = 0;
       let newTransaction = {};
-      if(transactionType === "userExpense"){
+
+      if (transactionType === "userExpense") {
         addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
-        let subtractBalance =  parseInt(stateData.userTransactions.Transactions["userBalance"], 10) - currentTransactionValue;
+        let subtractBalance = parseInt(stateData.userTransactions.Transactions["userBalance"], 10) - currentTransactionValue;
         newTransaction = {
           ...stateData.userTransactions.Transactions,
           [transactionType]: addedTransactionValue.toString(),
-          "userBalance": subtractBalance.toString(),
+          userBalance: subtractBalance.toString(),
         };
-      }
-      else if(transactionType === "userIncome"){
+      } else if (transactionType === "userIncome") {
         addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
         let addIncome = currentTransactionValue + parseInt(stateData.userTransactions.Transactions["userBalance"], 10);
         newTransaction = {
           ...stateData.userTransactions.Transactions,
           [transactionType]: addedTransactionValue.toString(),
-          "userBalance": addIncome.toString(),
+          userBalance: addIncome.toString(),
         };
-      }
-      else{
+      } else {
         addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
         newTransaction = {
           ...stateData.userTransactions.Transactions,
@@ -109,51 +109,53 @@ function AddmonetaryActions() {
         };
       }
 
-      // Update userTransaction state correctly
-      setUserTransaction(prevState => ({
+      setUserTransaction((prevState) => ({
         ...prevState,
         [transactionType]: addedTransactionValue.toString(),
-        currentUser: currentEmail
+        currentUser: currentEmail,
       }));
 
       dispatch(getUserTransactionsLocal({ newObject: newTransaction }));
       dispatch(updateUserTransactions(newTransaction));
       toast.success(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} Updated Successfully!`);
+
       const d = new Date();
-
       const day = d.getDate().toString().padStart(2, '0');
-      const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-indexed
+      const month = (d.getMonth() + 1).toString().padStart(2, '0');
       const year = d.getFullYear();
-
       const formattedDate = `${day}/${month}/${year}`;
+
       let type = "";
       let image = null;
-      if(transactionType === "userIncome"){
+      if (transactionType === "userIncome") {
         type = "Income";
-        image = income;
-      }
-      else if(transactionType === "userExpense"){
+        image = "https://firebasestorage.googleapis.com/v0/b/financeapp-4593b.appspot.com/o/images%2Fincome.png?alt=media&token=6f3f562b-0857-4366-9063-10aeca355ab3";
+      } else if (transactionType === "userExpense") {
         type = "Expense";
-        image = expense;
-      }
-      else{
+        image = "https://firebasestorage.googleapis.com/v0/b/financeapp-4593b.appspot.com/o/images%2Fexpense.png?alt=media&token=c5d9fa75-417e-4a71-b436-5b08da927f3c";
+      } else {
         type = "Balance";
-        image = balance;
+        image = "https://firebasestorage.googleapis.com/v0/b/financeapp-4593b.appspot.com/o/images%2Fbalance.png?alt=media&token=ea9ce38e-e48d-44c9-81aa-0b9866c1b329";
       }
+
       const formattedValue = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
-      }).format(Number(currentTransactionValue.toString()));
+      }).format(Number(currentTransactionValue));
+      let transactions = [];
       let anotherObject = {
-        "description": type,
-        "method": "added manually",
-        "date": formattedDate,
-        "amount": formattedValue,
-        "image": image
-      }
-      lastTransactions.unshift(anotherObject);
+        description: type,
+        method: "added manually",
+        date: formattedDate,
+        amount: formattedValue,
+        image: image,
+      };
+      transactions.push(anotherObject)
+      // setLastTransactions((prevTransactions) => [anotherObject, ...prevTransactions]);
+      dispatch(updateLastTransactions(anotherObject));
+      dispatch(pushManuallyaddedTransaction(anotherObject));
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -242,14 +244,8 @@ function AddmonetaryActions() {
         </div>
       </div>
       {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <Audio
-            height="80"
-            width="80"
-            radius="9"
-            color="green"
-            ariaLabel="loading"
-          />
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+          <Audio height="80" width="80" radius="9" color="green" ariaLabel="loading" />
         </div>
       )}
     </div>

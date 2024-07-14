@@ -1,8 +1,33 @@
 import "../components/componentstyles/lasttransactions.css";
 import Segment from "./segment";
 import Segmentheader from "./segmentsectionheader";
-import lastTransactions from "../../mockAPI/lastTransactions";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fetchUserLastTransactions } from "../../login/loginSlice";
+import { useState, useEffect } from "react";
+import { getUserTransactions } from "../../login/loginSlice";
+import { db } from "../../login/firebase";
+import { getDocs, collection } from "firebase/firestore";
+import { updateLastTransactionState } from "../../login/loginSlice";
+import { initializeLastTransactions } from "../../login/loginSlice";
 function LastTransactions() {
+  const data = useSelector(state => state.loginData);
+  let lastTransactions = data.lastTransactions;
+  let dispatch = useDispatch();
+  const value = collection(db, "userTransactions");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let lastData = await dispatch(fetchUserLastTransactions());
+        dispatch(updateLastTransactionState(lastData.payload.lastTransactions));
+      } catch (error) {
+        console.error("Error fetching user last transactions:", error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+  
   let sectionheaderData = [{
     label : "Description",
     label2 : "Method",
