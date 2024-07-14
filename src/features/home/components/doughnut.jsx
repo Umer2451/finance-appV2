@@ -1,59 +1,51 @@
 import DonutChart from "react-donut-chart";
 import "../components/componentstyles/doughnut.css";
 import DoughnutLabels from "./doughnutlabels";
+import { useSelector } from "react-redux";
 function MYdounutChart(props) {
+  debugger;
+  const loginData = useSelector(state => state.loginData);
+  let userTransactions = loginData.userTransactions.Transactions;
   let data = [
     {
-      label: "Home",
-      value: 25,
+      label: "Balance",
+      value: parseInt(userTransactions.userBalance),
     },
     {
-      label: "Transportation",
-      value: 35,
+      label: "Income",
+      value: parseInt(userTransactions.userIncome),
     },
     {
-      label: "Credit Card",
-      value: 25,
-    },
-    {
-      label: "Shopping",
-      value: 5,
-    },
-    {
-      label: "Groceries",
-      value: 25,
-    },
+      label: "Expense",
+      value: parseInt(userTransactions.userExpense),
+    }
   ];
+  let income = parseInt(userTransactions.userIncome);
+  let balance = parseInt(userTransactions.userBalance)
+  let expense =  parseInt(userTransactions.userExpense);
+  let total = income + expense + balance;
+
+  let incomePercentage = ((income / total) * 100).toFixed(1);
+  let expensePercentage = ((expense / total) * 100).toFixed(1);
+  let balancePercentage = ((balance / total) * 100).toFixed(1);  
   let labels = [
     {
-      label: "Home",
+      label: "Balance",
       icon: "home",
-      value: 25,
+      value: balancePercentage,
       color: "#F04438"
     },
     {
-      label: "Transportation",
+      label: "Income",
       icon: "local_shipping",
-      value: 35,
+      value: incomePercentage,
       color: "#36A2EB"
     },
     {
-      label: "Credit Card",
+      label: "Expense",
       icon: "credit_card",
-      value: 25,
+      value: expensePercentage,
       color: "#FFCE56"
-    },
-    {
-      label: "Shopping",
-      icon: "shopping_cart",
-      value: 5,
-      color: "#4BC0C0"
-    },
-    {
-      label: "Groceries",
-      icon: "shopping_basket",
-      value: 25,
-      color: "#9966FF"
     },
   ];
   let colors= ["#F04438", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]; 

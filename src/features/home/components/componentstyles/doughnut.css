@@ -11,12 +11,12 @@
     border-radius: 12px;
     flex: none;
     order: 0;
-    flex-grow: 1;
     font-family: 'Inter';
   font-style: normal;
   font-weight: 300;
   width: 600px;
   overflow: hidden;
+  height: 633px
 }
 .donutchart-arcs-path{
     stroke: none;
