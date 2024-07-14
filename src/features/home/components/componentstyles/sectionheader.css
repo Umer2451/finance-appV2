@@ -1,9 +1,11 @@
 .section-header-row {
     display: flex;
     align-items: center; /* Align all items in the center vertically */
-    gap: 150px; /* Consistent gap between all items */
-    width: 100%;
-    padding: 10px 20px 10px 9px; /* Consistent padding */
+    justify-content: space-between; /* Ensure space between items */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    gap: 20px; /* Consistent gap between all items */
+    width: 95%;
+    padding: 10px 20px; /* Consistent padding */
     background-color: #ECEFF2;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
     color: #516778;
@@ -12,4 +14,31 @@
 .section-header-row p {
     margin: 0; /* Remove default margin from paragraph */
     padding: 5px 0; /* Add consistent padding around each paragraph */
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+    .section-header-row {
+        gap: 10px; /* Reduce gap for smaller screens */
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .section-header-row p {
+        padding: 5px; /* Adjust padding for smaller screens */
+        font-size: 0.9rem; /* Adjust font size for better readability */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .section-header-row {
+        flex-direction: column; /* Stack items vertically for very small screens */
+        gap: 5px; /* Further reduce gap for very small screens */
+        padding: 5px; /* Further adjust padding for very small screens */
+    }
+
+    .section-header-row p {
+        padding: 3px; /* Further adjust padding for very small screens */
+        font-size: 0.8rem; /* Further adjust font size for readability */
+        text-align: center; /* Center-align text for better appearance */
+    }
 }

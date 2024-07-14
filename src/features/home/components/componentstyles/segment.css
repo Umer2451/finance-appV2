@@ -1,9 +1,11 @@
 .segment-items {
     display: flex;
     align-items: center; /* Align all items in the center vertically */
+    justify-content: space-between; /* Ensure space between items */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
     gap: 20px; /* Consistent gap between all items */
     width: 95%;
-    padding: 10px 20px 0px 9px;
+    padding: 10px 20px 0 9px;
     color: #000000;
 }
 
@@ -19,4 +21,41 @@
 
 .method, .date, .amount {
     padding: 5px 0; /* Add consistent padding around each paragraph */
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+    .segment-items {
+        gap: 10px; /* Reduce gap for smaller screens */
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .segment-content {
+        gap: 5px; /* Adjust gap between image and description for smaller screens */
+    }
+
+    .method, .date, .amount {
+        padding: 5px; /* Adjust padding for smaller screens */
+        font-size: 0.9rem; /* Adjust font size for better readability */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .segment-items {
+        flex-direction: column; /* Stack items vertically for very small screens */
+        gap: 5px; /* Further reduce gap for very small screens */
+        padding: 5px; /* Further adjust padding for very small screens */
+    }
+
+    .segment-content {
+        flex-direction: column; /* Stack image and description vertically */
+        align-items: flex-start; /* Align items to the start */
+        gap: 5px; /* Further adjust gap for very small screens */
+    }
+
+    .method, .date, .amount {
+        padding: 3px; /* Further adjust padding for very small screens */
+        font-size: 0.8rem; /* Further adjust font size for readability */
+        text-align: center; /* Center-align text for better appearance */
+    }
 }

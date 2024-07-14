@@ -86,6 +86,9 @@ function AddmonetaryActions() {
       let newTransaction = {};
 
       if (transactionType === "userExpense") {
+        if(currentTransactionValue > parseInt(stateData.userTransactions.Transactions["userBalance"], 10)){
+          return toast.error("Expense cannot be greater than balance!")
+        }
         addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
         let subtractBalance = parseInt(stateData.userTransactions.Transactions["userBalance"], 10) - currentTransactionValue;
         newTransaction = {

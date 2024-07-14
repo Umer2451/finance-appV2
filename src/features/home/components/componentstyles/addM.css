@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .addmonetary-section {
@@ -9,34 +10,39 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as per your preference */
     padding: 20px;
     border-radius: 8px;
-    width: 30%; /* Adjust width as per your layout */
+    width: 30%;
+    min-width: 280px; /* Ensure a minimum width for smaller screens */
+    max-width: 100%; /* Limit to full width of the container */
     font-family: 'Inter', sans-serif; /* Ensure Inter font is imported */
     margin-bottom: 20px;
     display: flex;
+    flex-direction: column; /* Allow vertical layout for smaller screens */
 }
 
 .addmonetary-section-left {
     flex: 1; /* Takes up one-third of the section for the left content */
     display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
 }
 
 .addmonetary-section-right {
     flex: 2; /* Takes up two-thirds of the section for the right content */
     display: none; /* Initially hides the right content */
-    justify-content: flex-start; /* Aligns content to the start */
-    align-items: center; /* Centers items vertically */
+    justify-content: flex-start; /* Align content to the start */
+    align-items: center; /* Center items vertically */
 }
 
 .addmonetary-section.active .addmonetary-section-right {
-    display: flex; /* Shows the right content when section is active */
+    display: flex; /* Show the right content when section is active */
 }
 
 .addmonetary-section p {
     font-size: 16px;
     font-weight: bold;
-font-family: 'Inter';
-font-style: normal;
-font-weight: 300;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 300;
 }
 
 .addmonetary-section input {
@@ -48,58 +54,54 @@ font-weight: 300;
     border-radius: 4px;
 }
 
-
-.add-income-button{
+.add-income-button,
+.add-expense-button,
+.add-balance-button,
+.add-submit-button {
     padding: 10px 40px;
-    background-color: #DCFAE6;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-income-button {
+    background-color: #dcfae6;
     color: green;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.add-expense-button{
-    padding: 10px 40px;
-    background-color: #FEE4E2;
-    color: #D92D20;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.add-expense-button {
+    background-color: #fee4e2;
+    color: #d92d20;
 }
 
-.add-balance-button{
-    padding: 10px 40px;
-    background-color: #DAEBFF;
+.add-balance-button {
+    background-color: #daebff;
     color: blue;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.add-submit-button{
-    padding: 10px 40px;
-    background-color: #DAEBFF;
+.add-submit-button {
+    background-color: #daebff;
     color: rgb(0, 0, 0);
-    border: none;
     border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
-.add-submit-button:hover{
+
+.add-submit-button:hover {
     background-color: #5ca0ed;
 }
+
 .add-income-button:hover {
     background-color: rgb(85, 231, 85);
 }
+
 .add-expense-button:hover {
     background-color: rgb(243, 116, 116);
 }
+
 .add-balance-button:hover {
     background-color: #5ca0ed;
 }
+
 .paragraphDiv {
     display: flex;
     flex-direction: column;
@@ -110,4 +112,40 @@ font-weight: 300;
 
 .paragraphDiv.hidden {
     display: none;
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 768px) {
+    .addmonetary-container {
+        justify-content: center;
+    }
+
+    .addmonetary-section {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+
+    .addmonetary-section-left,
+    .addmonetary-section-right {
+        justify-content: center; /* Center content for smaller screens */
+        align-items: center;
+    }
+
+    .addmonetary-section p {
+        font-size: 10px; /* Adjust font size for smaller screens */
+    }
+
+    .addmonetary-section input {
+        width: 80%; /* Adjust input width for smaller screens */
+    }
+
+    .add-income-button,
+    .add-expense-button,
+    .add-balance-button,
+    .add-submit-button {
+        padding: 10px 20px; /* Adjust padding for smaller screens */
+        width: 100%; /* Make buttons full width for smaller screens */
+    }
+    .paragraphDiv {
+        font-size: 0.8rem;
+    }
 }

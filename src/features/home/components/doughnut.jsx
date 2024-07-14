@@ -27,7 +27,8 @@ function MYdounutChart(props) {
 
   let incomePercentage = ((income / total) * 100).toFixed(1);
   let expensePercentage = ((expense / total) * 100).toFixed(1);
-  let balancePercentage = ((balance / total) * 100).toFixed(1);  
+  let balancePercentage = ((balance / total) * 100).toFixed(1);
+  
   let labels = [
     {
       label: "Balance",
