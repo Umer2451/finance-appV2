@@ -44,16 +44,23 @@ function LastTransactions() {
       {sectionheaderData.map((item, index) => (
         <Segmentheader key = {index} title = {item.label} sTitle = {item.label2} tTitle = {item.label3} fTitle = {item.label4}/>
       ))}
-          <>
-          {/* Conditionally render Segments if lastTransactions has data */}
-        {lastTransactions.length > 0 ? (
-          lastTransactions.map((item, index) => (
-            <Segment key={index} image={item.image} description={item.description} amount={item.amount} date={item.date} method={item.method} />
-          ))
-        ) : (
-          <p>No transactions found.</p>
-        )}
-      </>
+       <>
+  {/* Conditionally render Segments if lastTransactions has data */}
+  {lastTransactions.length > 0 ? (
+    lastTransactions.slice().reverse().slice(0, 8).map((item, index) => (
+      <Segment
+        key={index}
+        image={item.image}
+        description={item.description}
+        amount={item.amount}
+        date={item.date}
+        method={item.method}
+      />
+    ))
+  ) : (
+    <p>No transactions found.</p>
+  )}
+</>
     </div>
     </div>
   );
