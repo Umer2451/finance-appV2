@@ -81,13 +81,33 @@ function AddmonetaryActions() {
       await addDoc(value, userTransaction);
 
       let currentTransactionValue = parseInt(userTransaction[transactionType], 10) || 0;
-
-      let addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
-
-      let newTransaction = {
-        ...stateData.userTransactions.Transactions,
-        [transactionType]: addedTransactionValue.toString(),
-      };
+      let addedTransactionValue = 0;
+      let newTransaction = {};
+      if(transactionType === "userExpense"){
+        addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
+        let subtractBalance =  parseInt(stateData.userTransactions.Transactions["userBalance"], 10) - currentTransactionValue;
+        newTransaction = {
+          ...stateData.userTransactions.Transactions,
+          [transactionType]: addedTransactionValue.toString(),
+          "userBalance": subtractBalance.toString(),
+        };
+      }
+      else if(transactionType === "userIncome"){
+        addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
+        let addIncome = currentTransactionValue + parseInt(stateData.userTransactions.Transactions["userBalance"], 10);
+        newTransaction = {
+          ...stateData.userTransactions.Transactions,
+          [transactionType]: addedTransactionValue.toString(),
+          "userBalance": addIncome.toString(),
+        };
+      }
+      else{
+        addedTransactionValue = currentTransactionValue + parseInt(stateData.userTransactions.Transactions[transactionType], 10);
+        newTransaction = {
+          ...stateData.userTransactions.Transactions,
+          [transactionType]: addedTransactionValue.toString(),
+        };
+      }
 
       // Update userTransaction state correctly
       setUserTransaction(prevState => ({
@@ -108,11 +128,11 @@ function AddmonetaryActions() {
       const formattedDate = `${day}/${month}/${year}`;
       let type = "";
       let image = null;
-      if(transactionType == "userIncome"){
+      if(transactionType === "userIncome"){
         type = "Income";
         image = income;
       }
-      else if(transactionType == "userExpense"){
+      else if(transactionType === "userExpense"){
         type = "Expense";
         image = expense;
       }
